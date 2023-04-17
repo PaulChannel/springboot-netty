@@ -10,7 +10,7 @@ Netty 不只是一个接口和类的集合；它还定义了一种架构模型�
 ## 源码地址
 [github:springboot-netty](https://github.com/yagochannel/springboot-netty)
 
-## 参考资料
+## 参考资料&鸣谢
 《Netty实战》 ——Norman Maurer    Marvin Allen Wolfthal（著） 何品（译）
 
 [博客：Springboot 整合 Netty 实战](https://juejin.cn/post/6844903700746485767) 

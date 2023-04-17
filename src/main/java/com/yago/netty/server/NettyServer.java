@@ -3,7 +3,7 @@ package com.yago.netty.server;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import com.yago.netty.handler.NettyServerInitializer;
+import com.yago.netty.handler.NettyServerHandlerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -50,7 +50,7 @@ public class NettyServer {
 				// 设置tcp延时传输，提高网络负载
 				.childOption(ChannelOption.TCP_NODELAY, true)
 				// 添加Handler
-				.childHandler(new NettyServerInitializer());
+				.childHandler(new NettyServerHandlerInitializer());
 		serverBootstrap.bind().sync();
 
 		log.info("netty server started!");
