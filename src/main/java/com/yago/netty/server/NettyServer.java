@@ -29,10 +29,6 @@ public class NettyServer {
 	 */
 	EventLoopGroup boss = new NioEventLoopGroup();
 
-	/**
-	 * 用于数据处理的group
-	 */
-	EventLoopGroup work = new NioEventLoopGroup();
 
 	/**
 	 * 启动服务端方法
@@ -63,7 +59,6 @@ public class NettyServer {
 	@PreDestroy
 	public void destroy() throws InterruptedException {
 		boss.shutdownGracefully().sync();
-		work.shutdownGracefully().sync();
 		log.info("netty server shutdown");
 	}
 

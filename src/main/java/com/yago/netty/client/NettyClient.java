@@ -1,11 +1,14 @@
 package com.yago.netty.client;
 
 import java.net.InetSocketAddress;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import com.yago.netty.handler.ClientHandlerInitializer;
+import com.yago.netty.protocol.protobuf.MessageBase;
+import com.yago.netty.protocol.protobuf.MessageBase.Message.CommandType;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -72,4 +75,11 @@ public class NettyClient {
     group.shutdownGracefully().sync();
     socketChannel.close();
   }
+
+  public void sendMsg(String msg) {
+    MessageBase.Message message = MessageBase.Message.newBuilder().setCmd(CommandType.NORMAL).setContent(msg).setRequestId(UUID.randomUUID().toString()).build();
+
+    socketChannel.writeAndFlush(message);
+  }
+
 }

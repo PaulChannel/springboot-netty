@@ -26,6 +26,7 @@ public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
         .addLast(new ProtobufDecoder(MessageBase.Message.getDefaultInstance()))
         .addLast(new ProtobufVarint32LengthFieldPrepender())
         .addLast(new ProtobufEncoder())
+        .addLast(new NettyIdleServerHandler())
         .addLast(new NettyServerHandler());
   }
 }

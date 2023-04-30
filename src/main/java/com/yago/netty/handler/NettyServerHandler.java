@@ -24,8 +24,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<MessageBase.
       log.info("收到来自客户端的心跳消息 : {}", msg.toString());
       // 回应pong
       channelHandlerContext.writeAndFlush(new HeartbeatResponsePacket());
-    } else {
-
+    } else if (msg.getCmd().equals(CommandType.NORMAL)) {
+      log.info("收到客户端普通业务消息{}", msg.toString());
     }
   }
 }

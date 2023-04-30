@@ -1,14 +1,18 @@
 package com.yago.netty.handler;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import com.yago.netty.client.NettyClient;
 import com.yago.netty.protocol.protobuf.MessageBase.Message;
 import com.yago.netty.protocol.protobuf.MessageBase.Message.CommandType;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.EventLoop;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @description:
@@ -19,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
+  @Autowired
+  NettyClient nettyClient;
   @Override
   public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
     if(evt instanceof IdleStateEvent) {
@@ -33,5 +39,16 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
     } else {
       super.userEventTriggered(ctx, evt);
     }
+  }
+
+  // 服务端挂掉了进行重连
+  @Override
+  public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    EventLoop eventLoop = ctx.channel().eventLoop();
+    log.warn("客户端进行重连尝试");
+    eventLoop.schedule(() -> {
+      nettyClient.start();
+    }, 10L, TimeUnit.SECONDS);
+    super.channelInactive(ctx);
   }
 }
